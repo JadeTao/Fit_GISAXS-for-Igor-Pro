@@ -1,10 +1,11 @@
 #pragma rtGlobals=1		// Use modern global access method.
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æœ¬æ–‡ä»¶å…¨æ˜¯åœ¨è®²ä¸€ä¸ªåŠ è½½ GISAXS ä¿¡æ¯çš„å‡½æ•°ï¼Œå‚æ•°ï¼šå…‰çº¿ç±»å‹
 Function LoadNewGISAXS(Beamline)
 	String Beamline
 
+	// å£°æ˜ä¸€äº›å˜é‡
 	Variable grazingangle=NumVarOrDefault("alphai_detec",0.3)
 	Variable azimuthangle=NumVarOrDefault("phi_detec",0)
 	Variable Direct_X=Round(NumVarOrDefault("DirectXdial",650))
@@ -12,6 +13,7 @@ Function LoadNewGISAXS(Beamline)
 	Variable s2d_dist=NumVarOrDefault("distance",570)
 	Variable nrj=1239.97/NumVarOrDefault("long_onde",0.155)
 
+	// å¼¹å‡ºæç¤ºè¾“å…¥çš„çª—å£
 	Prompt grazingangle,"Incidence angle (?:"
 	Prompt azimuthangle,"Azimuthal angle (?:"
 	Prompt Direct_X,"Direct beam X pixel:"
@@ -21,6 +23,7 @@ Function LoadNewGISAXS(Beamline)
 
 	DoPrompt "Enter parameters", grazingangle, azimuthangle, Direct_X, Direct_Y, s2d_dist, nrj
 
+	// å£°æ˜ä¸€äº›ä¸çª—å£äº¤äº’æœ‰å…³çš„å˜é‡
 	DoWindow/K NewGISAXS
 	DoWindow/K cut
 	DoWindow/K cut2d
@@ -32,8 +35,8 @@ Function LoadNewGISAXS(Beamline)
 	DoWindow/K Res_gisaxs2D
 	DoWindow/K Fit_gisaxs2D
 
-	//-------------------Définition des variables-----------------------------------	
-		
+	//-------------------Dï¿½finition des variables-----------------------------------	
+	// å…¨å±€å˜é‡
 	Variable/G alphai_detec=grazingangle
 	Variable/G phi_detec=azimuthangle
 	Variable/G DirectXdial=Direct_X
@@ -56,14 +59,16 @@ Function LoadNewGISAXS(Beamline)
 	Variable/G varbinning=0
 	Variable/G cursmin,cursmax
 
-	//-------------------Chargement de l'image gisaxs2D et définition de l'espace réciproque (qy,qz)-----------------------------------	
-
+	//-------------------Chargement de l'image gisaxs2D et dï¿½finition de l'espace rï¿½ciproque (qy,qz)-----------------------------------	
+	// æ ¹æ®å…‰çº¿ç§ç±»ä¸åŒï¼Œè°ƒç”¨å¯¹åº”çš„loadå‡½æ•°(å®šä¹‰åœ¨æœ¬æ–‡ä»¶ä¸‹æ–¹)
 	String cmd="Load_"+Beamline+"()"
 	Execute cmd
 	
+	// å…¨å±€å˜é‡
 	Variable/G DirectX=DirectXinit
 	Variable/G DirectY=DirectYinit
 	
+	// è®¡ç®—
 	Redimension/D gisaxs2D	
 	Duplicate/O/D gisaxs2D gisaxs2D_detec
 	Make/O/N=(DimSize(gisaxs2D,0)+1)/D twothetaf
@@ -79,12 +84,16 @@ Function LoadNewGISAXS(Beamline)
 	VminCol=0
 	VmaxCol=abs(V_avg*10)
 	
+	// ç”»å›¾
 	Display/M/W=(0.2, 5.3, 11, 11);AppendImage gisaxs2d vs {twothetaf,alphaf} 
 	DoWindow/C NewGISAXS
 	ControlBar 60
+	// ä¸¤ä¸ªå¯è¾“å…¥å€¼çš„åŒºåŸŸ
 	SetVariable minCol, size={85,15}, pos={5,6}, proc=SetVarProc_ApplyColors, title="Min.", limits={0,Inf,0}, value= VminCol,fsize=11,bodyWidth=50//, format="%4.4g"
 	SetVariable maxCol, size={85,15}, pos={5,31},proc=SetVarProc_ApplyColors, title="Max.", limits={0,Inf,0}, value= VmaxCol,fsize=11,bodyWidth=50//, format="%4.4g"
+	// æ»‘åŠ¨å—
 	Slider slider0 pos={95,5},size={21,50},vert=1,side=0,proc=SliderProc,variable=VmaxCol,limits={V_max*2,0,V_max/2e16}
+	// ä¸€å †button
 	Button button5, size={60,20}, pos={160,7}, proc=ButtonProc_1dcut,title="1D cut",fsize=11
 	Button button5bis, size={60,20}, pos={230,7}, proc=ButtonProc_2dcut,title="2D fit",fsize=11
 	Button button7, size={60,20}, pos={300,7}, proc=ButtonProc_autoscale, title="Autoscale",fsize=11
@@ -97,6 +106,8 @@ Function LoadNewGISAXS(Beamline)
 	Button button8bis, size={60,40}, pos={440,7}, proc=ButtonProc_degscale, title="deg",fsize=11,disable=1
 	SetVariable setvarbin title=" ",size={20,20}, pos={365,31}, disable=2,value=varbinning, limits={-inf,inf,0}
 
+	// ç›®æµ‹cmtstrå‡½æ•°æ¥æ”¶ä¸¤ä¸ªå­—ç¬¦ä¸²å‚æ•°ï¼Œæ¯”è¾ƒä¸¤è€…æ˜¯å¦ç›¸åŒï¼Œå¦ï¼Œè¿”å›0
+	// æ ¹æ®ä¸åŒçš„å…‰çº¿ç§ç±»ç»˜å‡ºä¸åŒçš„æŒ‰é’®
 	If (cmpstr(Beamline,"id01")==0)
 		Button button5ter, size={60,20}, pos={370,7}, proc=ButtonProc_RSMid01,title="RSM",fsize=11
 	Endif
@@ -113,8 +124,10 @@ Function LoadNewGISAXS(Beamline)
 		Button button5ter, size={60,20}, pos={370,7}, proc=ButtonProc_RSMsixsasc,title="RSM",fsize=11
 	Endif
 
+	// ä¿®æ”¹å›¾åƒ
 	ModifyImage gisaxs2D ctab= {VminCol,VmaxCol,Geo,0}
 	ModifyGraph fSize=14,width=283.465,height={Plan,1,left,bottom},btLen=5,zero(bottom)=1
+	// ä¿®æ”¹è½´ä¿¡æ¯
 	Label bottom "2\\F'Symbol'q\\F'Arial'\\Bf\\M (deg)"	
 	Label left "\\F'Symbol'a\\F'Arial'\\Bf\\M (deg)"
 	SetAxis/A bottom
@@ -129,13 +142,13 @@ Function LoadNewGISAXS(Beamline)
 
 
 	//-------------------Impression des infos-----------------------------------	
-
+	// æ§åˆ¶å°è¾“å‡ºä¿¡æ¯
 	Print "Image size =",DimSize(gisaxs2D,0),"x",DimSize(gisaxs2D,1),"(Resolution =",resolutionX,"x",resolutionY,"mm)",", Direct beam = (",Direct_X,",",Direct_Y,")",", Sample-to-detector distance =",Distance,"mm"
 	Print "Energy =",1239.97/long_onde,"eV, Wavelength =",long_onde,"nm, Incidence angle =",alphai_detec,"deg, Azimuthal angle =",phi_detec,"deg"
 End
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// see line 91ï¼Œé¢œè‰²æ§åˆ¶å™¨
 Function SetVarProc_ApplyColors(ctrlName,varNum,varStr,varName) : SetVariableControl
 	String ctrlName
 	Variable varNum
@@ -162,7 +175,7 @@ Function SetVarProc_ApplyColors(ctrlName,varNum,varStr,varName) : SetVariableCon
 End
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æ»‘å—æ§åˆ¶å™¨ï¼Œç›®æµ‹ä¹Ÿæ˜¯å˜é¢œè‰²çš„
 Function SliderProc(ctrlName,sliderValue,event) : SliderControl
 	String ctrlName
 	Variable sliderValue
@@ -193,14 +206,14 @@ Function SliderProc(ctrlName,sliderValue,event) : SliderControl
 End
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æ§åˆ¶è‡ªåŠ¨ç¼©æ”¾
 Function ButtonProc_autoscale(ctrlName) : ButtonControl
 	String ctrlName
 	SetAxis/A/E=0
 End
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æ§åˆ¶çº¿æ€§ç¼©æ”¾ï¼Œæ§åˆ¶button6 button 66çš„å¯ç‚¹å‡»çŠ¶æ€ï¼Œå­˜ç–‘
 Function ButtonProc_linscale(ctrlName) : ButtonControl
 	String ctrlName
 	NVAR VminCol, VmaxCol
@@ -219,7 +232,7 @@ Function ButtonProc_linscale(ctrlName) : ButtonControl
 End
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æ§åˆ¶ä»€ä¹ˆä¸œè¥¿çœ‹ä¸æ‡‚(ä¸€ä¸ªäºŒç»´æ•°ç»„ï¼Œä»¥åŠä¸¤ä¸ªbuttonçš„å¯ç‚¹å‡»çŠ¶æ€)
 Function ButtonProc_logscale(ctrlName) : ButtonControl
 	String ctrlName
 	NVAR VminCol, VmaxCol
@@ -1816,11 +1829,11 @@ Function ButtonProc_renamewavecut(ctrlName) : ButtonControl
 	DoWindow/C $new_wi_name
 End
 
-//°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°?
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-//°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°?
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-//°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°?
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
 
 Function Load_d22()
 	NVAR resolutionX, resolutionY, directXinit, directYinit, alphai_detec, distance, long_onde
