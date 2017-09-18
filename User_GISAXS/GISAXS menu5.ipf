@@ -477,6 +477,7 @@ Function Calcul_champincidentmoins()
 	Variable interface=slayer
 	Variable slayertemp=slayer
 
+	// 弹出输入提示框
 	Prompt interface, "Interface # :"
 	Prompt alphamin,"Grazing angle min. (�):"
 	Prompt alphamax,"Grazing angle max. (�):"
@@ -492,6 +493,7 @@ Function Calcul_champincidentmoins()
 	Variable/G alpha_min=alphamin
 	Variable/G alpha_max=alphamax
 
+	// 主内容窗口
 	DoWindow/K U_moins
 	Make/N=1001/O/D Umoins
 	SetScale/I x alpha_min,alpha_max,"", Umoins
@@ -512,6 +514,7 @@ End
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
+// 点击 "Plot EFI..." "U+" 时调用此函数
 Function Calcul_champincidentplus()
 	NVAR long_onde,slayer
 	Variable alphamin=NumVarOrDefault("alpha_min",0)
@@ -520,6 +523,7 @@ Function Calcul_champincidentplus()
 	Variable interface=slayer
 	Variable slayertemp=slayer
 
+	// 弹出输入提示框
 	Prompt interface, "Interface # :"
 	Prompt alphamin,"Grazing angle min. (�):"
 	Prompt alphamax,"Grazing angle max. (�):"
@@ -535,6 +539,7 @@ Function Calcul_champincidentplus()
 	Variable/G alpha_min=alphamin
 	Variable/G alpha_max=alphamax
 
+	// 主内容窗口
 	DoWindow/K U_plus
 	Make/N=1001/O/D Uplus
 	SetScale/I x alpha_min,alpha_max,"", Uplus
@@ -555,6 +560,7 @@ End
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
+// 点击 "Plot EFI..." "V-" 时调用此函数
 Function Calcul_champincidentmoinsdown()
 	NVAR long_onde,slayer
 	Variable alphamin=NumVarOrDefault("alpha_min",0)
@@ -563,6 +569,7 @@ Function Calcul_champincidentmoinsdown()
 	Variable interface=slayer
 	Variable slayertemp=slayer
 
+	// 弹出输入提示框
 	Prompt interface, "Interface # :"
 	Prompt alphamin,"Grazing angle min. (�):"
 	Prompt alphamax,"Grazing angle max. (�):"
@@ -578,6 +585,7 @@ Function Calcul_champincidentmoinsdown()
 	Variable/G alpha_min=alphamin
 	Variable/G alpha_max=alphamax
 
+	// 主内容窗口
 	DoWindow/K V_moins
 	Make/N=1001/O/D Vmoins
 	SetScale/I x alpha_min,alpha_max,"", Vmoins
@@ -597,7 +605,7 @@ Function Calcul_champincidentmoinsdown()
 End
 
 //----------------------------------------------------------------------------------------------------------------------------------
-
+// 点击 "Plot EFI..." "V+" 时调用此函数
 Function Calcul_champincidentplusdown()
 	NVAR long_onde,slayer
 	Variable alphamin=NumVarOrDefault("alpha_min",0)
@@ -606,6 +614,7 @@ Function Calcul_champincidentplusdown()
 	Variable interface=slayer
 	Variable slayertemp=slayer
 
+	// 弹出输入提示框
 	Prompt interface, "Interface # :"
 	Prompt alphamin,"Grazing angle min. (�):"
 	Prompt alphamax,"Grazing angle max. (�):"
@@ -621,6 +630,7 @@ Function Calcul_champincidentplusdown()
 	Variable/G alpha_min=alphamin
 	Variable/G alpha_max=alphamax
 
+	// 主内容窗口
 	DoWindow/K V_plus
 	Make/N=1001/O/D Vplus
 	SetScale/I x alpha_min,alpha_max,"", Vplus
@@ -640,7 +650,7 @@ Function Calcul_champincidentplusdown()
 End
 
 //----------------------------------------------------------------------------------------------------------------------------------
-
+// 未用到
 Function map1d2z_efi()
 	NVAR long_onde,alphai_detec
 	Variable nrj=1239.97/long_onde
@@ -676,7 +686,7 @@ Function map1d2z_efi()
 End
 
 //----------------------------------------------------------------------------------------------------------------------------------
-
+// 未用到
 Function map1d2a_efi()
 	NVAR long_onde,alphai_detec,slayer
 	Variable nrj=1239.97/long_onde
@@ -713,7 +723,7 @@ Function map1d2a_efi()
 End
 
 //----------------------------------------------------------------------------------------------------------------------------------
-
+// 未用到
 Function map2d_efi()
 	NVAR long_onde,alphai_detec,alpha_min,alpha_max
 	Variable nrj=1239.97/long_onde
