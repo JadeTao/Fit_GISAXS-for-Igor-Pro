@@ -1,10 +1,10 @@
 #pragma rtGlobals=1		// Use modern global access method.
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// æœ¬æ–‡ä»¶å…¨æ˜¯åœ¨è®²ä¸€ä¸ªåˆ›å»º GISAXS çš„å‡½æ•°ï¼Œå‚æ•°ï¼šMapç±»å‹
 Function CreateNewGISAXS2D(MapType)
 	String MapType
-
+	//å–å€¼å¹¶å£°æ˜ä¸€äº›å˜é‡
 	Variable qxval=NumVarOrDefault("qx_val",0)
 	Variable qyval=NumVarOrDefault("qy_val",0)
 	Variable qzval=NumVarOrDefault("qz_val",0)
@@ -16,9 +16,10 @@ Function CreateNewGISAXS2D(MapType)
 	Variable 	phi=NumVarOrDefault("phi_detec",0)
 	Variable deltaq=NumVarOrDefault("delta_q",0.02)
 
-	Prompt alphai,"Incidence angle (°):"
+	// æ ¹æ®MapTypeçš„ä¸åŒï¼Œæç¤ºè¾“å…¥ä¿¡æ¯
+	Prompt alphai,"Incidence angle (ï¿½):"
 	If (CmpStr(MapType,"QyQz_map")==0)
-		Prompt phi,"Azimuthal angle (°):"
+		Prompt phi,"Azimuthal angle (ï¿½):"
 		Prompt qymin,"qy min (1/nm):"
 		Prompt qymax,"qy max (1/nm):"
 		Prompt qzmin,"qz min (1/nm):"
@@ -26,17 +27,17 @@ Function CreateNewGISAXS2D(MapType)
 		Prompt qxval,"qx (1/nm):"
 		Prompt deltaq,"Delta q (1/nm):"
 		DoPrompt "Enter parameters", alphai, phi, qymin, qymax, qzmin, qzmax, qxval, deltaq
-//	ElseIf (CmpStr(MapType,"QxQz_map")==0)
-//		Prompt phi,"Azimuthal angle (°):"
-//		Prompt qymin,"qx min (1/nm):"
-//		Prompt qymax,"qx max (1/nm):"
-//		Prompt qzmin,"qz min (1/nm):"
-//		Prompt qzmax,"qz max (1/nm):"
-//		Prompt qyval,"qy (1/nm):"
-//		Prompt deltaq,"Delta q (1/nm):"
-//		DoPrompt "Enter parameters", alphai, phi, qymin, qymax, qzmin, qzmax, qyval, deltaq
+		//	ElseIf (CmpStr(MapType,"QxQz_map")==0)
+		//		Prompt phi,"Azimuthal angle (ï¿½):"
+		//		Prompt qymin,"qx min (1/nm):"
+		//		Prompt qymax,"qx max (1/nm):"
+		//		Prompt qzmin,"qz min (1/nm):"
+		//		Prompt qzmax,"qz max (1/nm):"
+		//		Prompt qyval,"qy (1/nm):"
+		//		Prompt deltaq,"Delta q (1/nm):"
+		//		DoPrompt "Enter parameters", alphai, phi, qymin, qymax, qzmin, qzmax, qyval, deltaq
 	Elseif (CmpStr(MapType,"QxQy_map")==0)
-		Prompt phi,"Azimuthal angle (°):"
+		Prompt phi,"Azimuthal angle (ï¿½):"
 		Prompt qymin,"qy min (1/nm):"
 		Prompt qymax,"qy max (1/nm):"
 		Prompt qzmin,"qx min (1/nm):"
@@ -45,7 +46,7 @@ Function CreateNewGISAXS2D(MapType)
 		Prompt deltaq,"Delta q (1/nm):"
 		DoPrompt "Enter parameters", alphai, phi, qymin, qymax, qzmin, qzmax, qzval, deltaq
 	Else
-		Prompt phi,"Delta phi (°):"
+		Prompt phi,"Delta phi (ï¿½):"
 		Prompt qymin,"qy min (1/nm):"
 		Prompt qymax,"qy max (1/nm):"
 		Prompt qzmin,"phi min (1/nm):"
@@ -55,6 +56,7 @@ Function CreateNewGISAXS2D(MapType)
 		DoPrompt "Enter parameters", alphai, phi, qymin, qymax, qzmin, qzmax, qzval, deltaq
 	EndIf	
 
+	// å£°æ˜ä¸€äº›å…¨å±€å˜é‡
 	Variable/G qx_val=qxval
 	Variable/G qy_val=qyval
 	Variable/G qz_val=qzval
@@ -72,6 +74,7 @@ Function CreateNewGISAXS2D(MapType)
 	
 	Variable npointsy, npointsz
 	
+	// å½“MapTypeä¸ºä¸‹åˆ—ä¸‰è€…ä¹‹ä¸€æ—¶ï¼Œæ‰§è¡Œè¿™éƒ¨é€»è¾‘ï¼Œå¦åˆ™æ‰§è¡ŒElseéƒ¨åˆ†çš„é€»è¾‘ï¼Œå¤§ä½“ä¸Šè®¾ç½®xè½´yè½´çš„èŒƒå›´ï¼Œåœ¨æ§åˆ¶å°è¾“å‡ºäº†ä¸€äº›ä¿¡æ¯
 	If (CmpStr(MapType,"QyQz_map")==0 || CmpStr(MapType,"QxQz_map")==0 || CmpStr(MapType,"QxQy_map")==0)
 		npointsy=ceil((qy_max-qy_min)/deltaq)+1
 		npointsz=ceil((qz_max-qz_min)/deltaq)+1
@@ -265,7 +268,7 @@ Function ButtonProc_newQyPhi(ctrlName) : ButtonControl
 End
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-//°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Function CreateNewGISAXS1D(CutType)
@@ -281,8 +284,8 @@ Function CreateNewGISAXS1D(CutType)
 	Variable 	phi=NumVarOrDefault("phi_detec",0)
 	Variable deltaq=NumVarOrDefault("delta_q",0.02)
 
-	Prompt alphai,"Incidence angle (°):"
-	Prompt phi,"Azimuthal angle (°):"
+	Prompt alphai,"Incidence angle (ï¿½):"
+	Prompt phi,"Azimuthal angle (ï¿½):"
 	If (CmpStr(CutType,"Qy_cut")==0)
 		Prompt qymin,"qy min (1/nm):"
 		Prompt qymax,"qy max (1/nm):"

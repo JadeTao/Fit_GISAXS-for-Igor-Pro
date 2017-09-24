@@ -68,7 +68,7 @@ Function LoadNewGISAXS(Beamline)
 	Variable/G DirectX=DirectXinit
 	Variable/G DirectY=DirectYinit
 	
-	// 计算
+	// 计算（测试）
 	Redimension/D gisaxs2D	
 	Duplicate/O/D gisaxs2D gisaxs2D_detec
 	Make/O/N=(DimSize(gisaxs2D,0)+1)/D twothetaf
