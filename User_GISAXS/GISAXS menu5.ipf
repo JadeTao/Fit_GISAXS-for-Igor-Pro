@@ -66,7 +66,7 @@ Menu "FitGISAXS"
 	"Plot reflection...", Reflection_coef()
 	// 绘制转化
 	"Plot transmission...", Transmission_coef()
-	绘制穿透深度
+	// 绘制穿透深度
 	"Plot penetration depth...", Penetration_depth()
 	// EFI 是什么？
 	Submenu "Plot EFI..."
