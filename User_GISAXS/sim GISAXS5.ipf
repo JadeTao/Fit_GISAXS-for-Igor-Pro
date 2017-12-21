@@ -12,8 +12,8 @@ Function CreateNewGISAXS2D(MapType)
 	Variable qymax=NumVarOrDefault("qy_max",2.5)
 	Variable qzmin=NumVarOrDefault("qz_min",0)
 	Variable qzmax=NumVarOrDefault("qz_max",2.5)
-	Variable 	alphai=NumVarOrDefault("alphai_detec",0.3)
-	Variable 	phi=NumVarOrDefault("phi_detec",0)
+	Variable alphai=NumVarOrDefault("alphai_detec",0.3)
+	Variable phi=NumVarOrDefault("phi_detec",0)
 	Variable deltaq=NumVarOrDefault("delta_q",0.02)
 
 	// 根据MapType的不同，提示输入信息
@@ -81,6 +81,7 @@ Function CreateNewGISAXS2D(MapType)
 		Make/N=(npointsy,npointsz)/D/O simgisaxs2D
 		SetScale/P x qy_min,deltaq,"", simgisaxs2D
 		SetScale/P y qz_min,deltaq,"", simgisaxs2D
+		
 		Print "Image size =",DimSize(simgisaxs2D,0),"x",DimSize(simgisaxs2D,1),"(resolution =",deltaq,"1/nm)"
 		Print "Incidence angle =",alphai_detec,"deg, Azimuthal angle =",phi_detec,"deg"
 	Else

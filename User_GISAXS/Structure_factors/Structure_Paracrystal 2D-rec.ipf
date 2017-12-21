@@ -2,17 +2,17 @@
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Function Structure_Factor(q_x,q_y,q_z,Dy_hs,Dz_hs,sigma)	// Paracrystal 2D Rectangular lattice
+Function Structure_Factor(q_x,q_y,q_z,Dy_hs,Dz_hs,sigma)	// 
 	Variable q_x,q_y,q_z,Dy_hs,Dz_hs,sigma
 	Wave/D coef
 	Variable vLambda0=1e3		// correlation length (nm)
 	Variable q_p=sqrt(q_x^2+q_y^2)
 	Variable vA,vB,sigma_x,sigma_y,vPhi_x,vPhi_y,vQscalA,vQscalB
 	
-	vA=coef[16]*Dy_hs		// pas du réseau dans la direction x
-	vB=Dy_hs				// pas du réseau dans la direction y
-	sigma_x=coef[17]*sigma	// écart-type dans la direction x
-	sigma_y=sigma			// écart-type dans la direction y
+	vA=coef[16]*Dy_hs		// pas du rï¿½seau dans la direction x
+	vB=Dy_hs				// pas du rï¿½seau dans la direction y
+	sigma_x=coef[17]*sigma	// ï¿½cart-type dans la direction x
+	sigma_y=sigma			// ï¿½cart-type dans la direction y
 
 	vPhi_x=exp(-q_p^2*sigma_x^2/2)*exp(-vA/vLambda0)
 	vPhi_y=exp(-q_p^2*sigma_y^2/2)*exp(-vB/vLambda0)
